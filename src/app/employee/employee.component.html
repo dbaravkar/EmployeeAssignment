@@ -1,0 +1,74 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-8">
+        <input type="text" class="form-control" placeholder="Search name here..." [(ngModel)]="toSearch">
+    </div>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">Id
+          </th>
+          <th scope="col">Name<i class="fa fa-chevron-up" (click)="sortNameColumn('asc')"></i><i class="fa fa-chevron-down" (click)="sortNameColumn('desc')"></i></th>
+          <th scope="col">Department</th>
+          <th scope="col">Joining Date<i class="fa fa-chevron-up" (click)="sortDateColumn('asc')"></i><i class="fa fa-chevron-down" (click)="sortDateColumn('desc')"></i></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let employee of employeeData | nameSearch: toSearch">
+          <th scope="row">{{employee.id}}</th>
+          <td>{{employee.name}}</td>
+          <td>{{employee.department}}</td>
+          <td>{{employee.joiningDate | date:'dd/MM/yyyy'}}</td>
+        </tr>        
+      </tbody>
+    </table>
+  </div>
+  <button type="button" class="btn btn-primary" (click)="removeDept()">Remove Department</button>
+
+<br><br><br>
+
+
+    <div class="row">
+        <span>Employee list who have experience more than 2 years: :</span>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Name</th>
+            <th scope="col">Department</th>
+            <th scope="col">Joining Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let employee of experiencedEmployees">
+            <th scope="row">{{employee.id}}</th>
+            <td>{{employee.name}}</td>
+            <td>{{employee.department}}</td>
+            <td>{{employee.joiningDate | date:'dd/MM/yyyy'}}</td>
+          </tr>        
+        </tbody>
+      </table>
+    </div>
+
+    <br><br><br>
+
+
+    <div class="row">
+      <span>Department wise count:</span>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">Department</th>
+            <th scope="col">count</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let dept of distinctDept">
+            <td>{{dept.department}}</td>
+            <td>{{dept.count}}</td>
+          </tr>        
+        </tbody>
+      </table>
+    </div>
+  </div>
+
