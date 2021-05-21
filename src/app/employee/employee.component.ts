@@ -24,23 +24,8 @@ toSearch: string;
   getEmployeeData(): void {
     this.employeeData = this.employeeService.getEmployeeDetails();
     if (this.employeeData && this.employeeData.length) {
-
-     const distinctData = this.employeeData.reduce((acc, cur) => {
-        acc[cur.department] = (acc[cur.department] || 0) + 1;
-        return acc;
-      }, {});
-
-
-     const keys = Object.keys(distinctData);
-     const values = Object.values(distinctData);
-     keys.forEach( (k, idx) => {
-        this.distinctDept.push({department: k, count: values[idx]});
-      });
-
-     this.experiencedEmployees = this.employeeData.filter((e) => {
-      const Days = Math.floor((new Date().getTime() - new Date(e.joiningDate).getTime()) / (1000 * 3600 * 24));
-      return Days > 730;
-    });
+     this.getExperiencedEmployee();
+     this.getDistinctDepartments();
     }
   }
 
@@ -67,6 +52,26 @@ toSearch: string;
   removeDept(): void {
     this.employeeData = this.employeeData.filter((e) => {
       return e.department !== 'Development';
+    });
+  }
+
+  getExperiencedEmployee(): void {
+    this.experiencedEmployees = this.employeeData.filter((e) => {
+      const Days = Math.floor((new Date().getTime() - new Date(e.joiningDate).getTime()) / (1000 * 3600 * 24));
+      return Days > 730;
+    });
+  }
+
+  getDistinctDepartments() {
+    const distinctData = this.employeeData.reduce((acc, cur) => {
+      acc[cur.department] = (acc[cur.department] || 0) + 1;
+      return acc;
+    }, {});
+
+    const keys = Object.keys(distinctData);
+    const values = Object.values(distinctData);
+    keys.forEach( (k, idx) => {
+      this.distinctDept.push({department: k, count: values[idx]});
     });
   }
 }
