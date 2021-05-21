@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { IEmployeeDataModel, DistinctData } from './employee.model';
+import { IEmployeeDataModel } from './employee.model';
 import { EmployeeService } from '../services/employee.service';
 
 @Component({
@@ -29,41 +29,45 @@ toSearch: string;
     }
   }
 
-  sortNameColumn(order: string): void {
-    if (order === 'asc') {
-      this.employeeData.sort( (a, b) => a.name.localeCompare(b.name));
+  sortNameColumn(orderby: string): void {
+    if (orderby === 'asc') {
+      this.employeeData.sort( (a: IEmployeeDataModel, b: IEmployeeDataModel) => {
+        return a.name.localeCompare(b.name);
+      });
     } else {
-      this.employeeData.sort( (a, b) => b.name.localeCompare(a.name));
+      this.employeeData.sort( (a: IEmployeeDataModel, b: IEmployeeDataModel) => {
+        return b.name.localeCompare(a.name);
+      });
     }
   }
 
-  sortDateColumn(order: string): IEmployeeDataModel[] {
-    if (order === 'asc') {
-      return this.employeeData.sort((a, b) => {
+  sortDateColumn(orderby: string): IEmployeeDataModel[] {
+    if (orderby === 'asc') {
+      return this.employeeData.sort((a: IEmployeeDataModel, b: IEmployeeDataModel) => {
        return new Date(a.joiningDate).getTime() - new Date(new Date(b.joiningDate)).getTime();
     });
   } else {
-    return this.employeeData.sort((a, b) => {
+    return this.employeeData.sort((a: IEmployeeDataModel, b: IEmployeeDataModel) => {
       return new Date(b.joiningDate).getTime() - new Date(new Date(a.joiningDate)).getTime();
    });
   }
   }
 
   removeDept(): void {
-    this.employeeData = this.employeeData.filter((e) => {
+    this.employeeData = this.employeeData.filter((e: IEmployeeDataModel) => {
       return e.department !== 'Development';
     });
   }
 
   getExperiencedEmployee(): void {
-    this.experiencedEmployees = this.employeeData.filter((e) => {
+    this.experiencedEmployees = this.employeeData.filter((e: IEmployeeDataModel) => {
       const Days = Math.floor((new Date().getTime() - new Date(e.joiningDate).getTime()) / (1000 * 3600 * 24));
       return Days > 730;
     });
   }
 
   getDistinctDepartments() {
-    const distinctData = this.employeeData.reduce((acc, cur) => {
+    const distinctData = this.employeeData.reduce((acc: {}, cur: IEmployeeDataModel) => {
       acc[cur.department] = (acc[cur.department] || 0) + 1;
       return acc;
     }, {});

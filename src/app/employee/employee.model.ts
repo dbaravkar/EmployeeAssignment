@@ -4,8 +4,3 @@ name: string;
 department: string;
 joiningDate: string;
 }
-
-export interface DistinctData {
-    count: number;
-    department: string;
-}
